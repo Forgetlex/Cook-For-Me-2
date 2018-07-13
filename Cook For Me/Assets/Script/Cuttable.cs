@@ -4,18 +4,52 @@ using UnityEngine;
 
 public class Cuttable : MonoBehaviour {
 
+    public Vector3 localPosChange = new Vector3(0, 0, 0);
+    public Vector3 localScaleChange = new Vector3(0, 0, 0);
+
     public int CooldownInSeconds = 1;
+
+    public GameObject FirstChild;
+
+    public GameObject LastChild;
+
+    public GameObject GameChild;
+
+    public int childrenCount = 0;
 	// Use this for initialization
 	void Start () {
 		
-	}
-	
+        for(int i = 0; i < childrenCount; ++i)
+        {
+            GameObject obj = Instantiate(GameChild, transform);
+            for (int j = 0; j < i; ++j)
+            {
+                obj.transform.position += localPosChange;
+                obj.transform.localScale += localScaleChange;
+            }
+        }
+    }
+
+    void DropLast()
+    {
+        gameObject.transform.GetChild(--childrenCount).gameObject.AddComponent<Rigidbody>();
+    }
+
 	// Update is called once per frame
 	void Update () {
 		
 	}
 
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionExit(Collision collision)
+    {
+        Knife knife = collision.gameObject.GetComponent<Knife>();
+        if (knife != null)
+        {
+            DropLast();
+        }
+    }
+
+    /*void OnCollisionEnter(Collision collision)
     {
         Knife knife = collision.gameObject.GetComponent<Knife>();
 
@@ -37,7 +71,7 @@ public class Cuttable : MonoBehaviour {
         Debug.Log( newSize.x + " : " + newSize.y + " : " + newSize.z);
         this.transform.localScale -= new Vector3(transform.localScale.x / 2.0f, transform.localScale.y / 2.0f, transform.localScale.z / 2.0f);
         //Instantiate(transform, pos, rot);
-    }
+    }*/
 
     IEnumerator Wait(int seconds)
     {
