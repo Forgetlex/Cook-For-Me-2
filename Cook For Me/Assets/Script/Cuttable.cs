@@ -15,17 +15,26 @@ public class Cuttable : MonoBehaviour {
 
     public GameObject GameChild;
 
+    public GameObject IgnoreCollider;
+
     public int childrenCount = 0;
 	// Use this for initialization
 	void Start () {
-		
-        for(int i = 0; i < childrenCount; ++i)
+
+       // Physics.IgnoreCollision(IgnoreCollider.GetComponent<Collider>(), GetComponent<Collider>());
+
+        for (int i = 0; i < childrenCount; ++i)
         {
             GameObject obj = Instantiate(GameChild, transform);
             for (int j = 0; j < i; ++j)
             {
                 obj.transform.position += localPosChange;
                 obj.transform.localScale += localScaleChange;
+            }
+            if (i > 0)
+            {
+                //obj.GetComponent<FixedJoint>().connectedBody = transform.GetChild(i-1).gameObject.GetComponent<Rigidbody>();
+                //obj.transform.parent = gameObject.transform.GetChild(i - 1);
             }
         }
     }
@@ -40,9 +49,9 @@ public class Cuttable : MonoBehaviour {
 		
 	}
 
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerEnter(Collider collider)
     {
-        Knife knife = collision.gameObject.GetComponent<Knife>();
+        Knife knife = collider.GetComponent<Knife>();
         if (knife != null)
         {
             DropLast();
