@@ -41,13 +41,15 @@ public class Cuttable : MonoBehaviour {
 
     void DropLast()
     {
-        gameObject.transform.GetChild(--childrenCount).gameObject.AddComponent<Rigidbody>();
+        GameObject child = gameObject.transform.GetChild(transform.childCount-1).gameObject;
+        child.transform.parent = null;
+        child.gameObject.AddComponent<Rigidbody>();
     }
 
 	// Update is called once per frame
 	void Update () {
-		
-	}
+
+    }
 
     private void OnTriggerEnter(Collider collider)
     {
