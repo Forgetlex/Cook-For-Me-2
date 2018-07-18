@@ -14,15 +14,30 @@ public class HeatSensitive : MonoBehaviour {
     public float CrossSectionalArea = 1;
     public float MaterialThickness = 1;
 
+    HeatSource source;
+
 	// Use this for initialization
 	void Start () {
-		
+        source = GetComponent<HeatSource>();
+
+        if(source != null)
+        {
+            InvokeRepeating("SetTemperature", 1.0f, 1.0f);
+        }
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    void SetTemperature()
+    {
+        if(source != null)
+        {
+            source.Temperature = Temperature;
+        }
+    }
 
     public float HeatTransferFrom(HeatSensitive sensitive)
     {
@@ -73,7 +88,17 @@ public class HeatSensitive : MonoBehaviour {
         if (Temperature < MinTemperature) Temperature = MinTemperature;
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnCollisionStay(Collision collision)
+    {
+        HeatSource source = collision.gameObject.GetComponent<HeatSource>();
+
+        if(source != null)
+        {
+            ApplyHeatTransfer(HeatTransferFrom(source));
+        }
+    }
+
+    /*private void OnTriggerStay(Collider other)
     {
         HeatSensitive sensitive = other.GetComponent<HeatSensitive>();
 
@@ -81,5 +106,5 @@ public class HeatSensitive : MonoBehaviour {
         {
             ApplyHeatTransfer(HeatTransferFrom(sensitive));
         }
-    }
+    }*/
 }

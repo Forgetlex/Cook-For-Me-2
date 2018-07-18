@@ -33,7 +33,6 @@ public class Cookable : MonoBehaviour {
     private HeatSensitive Heat;
 
     private List<HeatSource> sources = new List<HeatSource>();
-    private List<HeatSensitive> sensitives = new List<HeatSensitive>();
 
     // The Cookable has been cooking for how many seconds
     public float HasBeenCookingFor = 0;
@@ -58,20 +57,15 @@ public class Cookable : MonoBehaviour {
 
     void SetTemperature()
     {
-        if(sources.Count == 0 && sensitives.Count == 0)
+        if(sources.Count == 0)
         {
-            Heat.ApplyHeatTransfer(-1);
+            Heat.Temperature = 21;
         }
         else
         {
             foreach(HeatSource source in sources)
             {
                 Heat.ApplyHeatTransfer(Heat.HeatTransferFrom(source));
-            }
-
-            foreach (HeatSensitive sensitive in sensitives)
-            {
-                Heat.ApplyHeatTransfer(Heat.HeatTransferFrom(sensitive));
             }
         }
     }
@@ -96,20 +90,33 @@ public class Cookable : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
+    {
+        HeatSource source = collision.gameObject.GetComponent<HeatSource>();
+
+        if (source != null)
+        {
+            sources.Add(source);
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        HeatSource source = collision.gameObject.GetComponent<HeatSource>();
+
+        if (source != null)
+        {
+            sources.Remove(source);
+        }
+    }
+
+    /*private void OnTriggerEnter(Collider other)
     {
         HeatSource source = other.GetComponent<HeatSource>();
 
         if(source != null)
         {
             sources.Add(source);
-        }
-
-        HeatSensitive sensitive = other.GetComponent<HeatSensitive>();
-
-        if (sensitive != null)
-        {
-            sensitives.Add(sensitive);
         }
     }
 
@@ -121,12 +128,5 @@ public class Cookable : MonoBehaviour {
         {
             sources.Remove(source);
         }
-
-        HeatSensitive sensitive = other.GetComponent<HeatSensitive>();
-
-        if (sensitive != null)
-        {
-            sensitives.Remove(sensitive);
-        }
-    }
+    }*/
 }

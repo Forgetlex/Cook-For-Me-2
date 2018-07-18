@@ -25,7 +25,8 @@ public class Cuttable : MonoBehaviour {
 
         for (int i = 0; i < childrenCount; ++i)
         {
-            GameObject obj = Instantiate(GameChild, transform);
+            GameObject obj = Instantiate(GameChild);
+            obj.transform.parent = gameObject.transform;
             for (int j = 0; j < i; ++j)
             {
                 obj.transform.position += localPosChange;
