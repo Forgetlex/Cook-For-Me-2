@@ -47,9 +47,7 @@ public class Cuttable : MonoBehaviour {
         child.gameObject.AddComponent<Rigidbody>();
         OVRGrabbable grab = child.gameObject.AddComponent<OVRGrabbable>();
         grab.enabled = true;
-        Collider[] colliders = child.GetComponents<Collider>();
-        for (int i = 0; i < colliders.Length; i++)
-            grab.grabPoints.SetValue(colliders.GetValue(i), i);
+        grab.DetectGrabPoints();
     }
 
 	// Update is called once per frame

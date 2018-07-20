@@ -24,18 +24,22 @@ public class PlaySoundOnCollision : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
-        PlaySoundIfMatch(collision, AudioEnter);
+        if (AudioEnter != null)
+            PlaySoundIfMatch(collision, AudioEnter);
     }
 
     private void OnCollisionStay(Collision collision)
     {
-        PlaySoundIfMatch(collision, AudioStay);
+        if(AudioStay != null)
+            PlaySoundIfMatch(collision, AudioStay);
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        AudioStay.Stop();
-        PlaySoundIfMatch(collision, AudioExit);
+        if (AudioStay != null)
+            AudioStay.Stop();
+        if (AudioExit != null)
+            PlaySoundIfMatch(collision, AudioExit);
     }
 
     private void PlaySoundIfMatch(Collision col, AudioSource source)
@@ -46,9 +50,8 @@ public class PlaySoundOnCollision : MonoBehaviour {
         string tag = col.gameObject.tag;
         if (script != null || (tag != "" && Tag.Equals(tag)))
         {
-            if (!source.loop || (source.loop && !source.isPlaying))
+            if ((!source.loop || (source.loop && !source.isPlaying)))
             {
-                source.transform.parent = this.gameObject.transform;
                 source.Play();
             }
         }

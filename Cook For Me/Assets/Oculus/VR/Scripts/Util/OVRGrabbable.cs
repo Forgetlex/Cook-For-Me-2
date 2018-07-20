@@ -137,6 +137,11 @@ public class OVRGrabbable : MonoBehaviour
         m_grabbedCollider = null;
     }
 
+    public void DetectGrabPoints()
+    {
+        m_grabPoints = this.GetComponents<Collider>();
+    }
+
     void Awake()
     {
         if (m_grabPoints.Length == 0)
