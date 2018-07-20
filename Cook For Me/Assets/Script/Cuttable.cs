@@ -45,6 +45,11 @@ public class Cuttable : MonoBehaviour {
         GameObject child = gameObject.transform.GetChild(transform.childCount-1).gameObject;
         child.transform.parent = null;
         child.gameObject.AddComponent<Rigidbody>();
+        OVRGrabbable grab = child.gameObject.AddComponent<OVRGrabbable>();
+        grab.enabled = true;
+        Collider[] colliders = child.GetComponents<Collider>();
+        for (int i = 0; i < colliders.Length; i++)
+            grab.grabPoints.SetValue(colliders.GetValue(i), i);
     }
 
 	// Update is called once per frame
@@ -52,12 +57,13 @@ public class Cuttable : MonoBehaviour {
 
     }
 
-    private void OnTriggerEnter(Collider collider)
+    private void OnCollisionEnter(Collision other)
     {
-        Knife knife = collider.GetComponent<Knife>();
+        Knife knife = other.gameObject.GetComponent<Knife>();
         if (knife != null)
         {
             DropLast();
+            Wait(0.1f);
         }
     }
 
@@ -85,7 +91,7 @@ public class Cuttable : MonoBehaviour {
         //Instantiate(transform, pos, rot);
     }*/
 
-    IEnumerator Wait(int seconds)
+    IEnumerator Wait(float seconds)
     {
         yield return new WaitForSeconds(seconds);
     }
