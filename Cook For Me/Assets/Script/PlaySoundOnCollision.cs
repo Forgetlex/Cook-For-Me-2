@@ -53,6 +53,8 @@ public class PlaySoundOnCollision : MonoBehaviour {
         AudioSource source = this.gameObject.AddComponent<AudioSource>();
         source.playOnAwake = false;
         source.clip = audio;
+        source.spatialBlend = 1.0f;
+        source.maxDistance = 3.0f;
 
         return source;
     }

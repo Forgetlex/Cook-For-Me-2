@@ -65,6 +65,15 @@ public class Cuttable : MonoBehaviour {
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<Knife>() != null)
+        {
+            DropLast();
+            Wait(0.1f);
+        }
+    }
+
     /*void OnCollisionEnter(Collision collision)
     {
         Knife knife = collision.gameObject.GetComponent<Knife>();
