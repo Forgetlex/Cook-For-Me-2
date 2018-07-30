@@ -62,13 +62,25 @@ public class PlaySoundOnCollision : MonoBehaviour {
     private void OnCollisionEnter(Collision collision)
     {
         if (AudioEnter != null)
-            PlaySoundIfMatch(collision, AudioEnter);
+            PlaySoundIfMatch(collision.gameObject, AudioEnter);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (AudioEnter != null)
+            PlaySoundIfMatch(other.gameObject, AudioEnter);
     }
 
     private void OnCollisionStay(Collision collision)
     {
         if(AudioStay != null)
-            PlaySoundIfMatch(collision, AudioStay);
+            PlaySoundIfMatch(collision.gameObject, AudioStay);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (AudioStay != null)
+            PlaySoundIfMatch(other.gameObject, AudioStay);
     }
 
     private void OnCollisionExit(Collision collision)
@@ -76,15 +88,23 @@ public class PlaySoundOnCollision : MonoBehaviour {
         if (AudioStay != null)
             AudioStay.Stop();
         if (AudioExit != null)
-            PlaySoundIfMatch(collision, AudioExit);
+            PlaySoundIfMatch(collision.gameObject, AudioExit);
     }
 
-    private void PlaySoundIfMatch(Collision col, AudioSource source)
+    private void OnTriggerExit(Collider other)
+    {
+        if (AudioStay != null)
+            AudioStay.Stop();
+        if (AudioExit != null)
+            PlaySoundIfMatch(other.gameObject, AudioExit);
+    }
+
+    private void PlaySoundIfMatch(GameObject obj, AudioSource source)
     {
         Component script = null;
         if(Script != null)
-            script = col.gameObject.GetComponent(Script);
-        string tag = col.gameObject.tag;
+            script = obj.GetComponent(Script);
+        string tag = obj.tag;
         if (script != null || (tag != "" && Tag.Equals(tag)))
         {
             if ((!source.loop || (source.loop && !source.isPlaying)) && Time.timeSinceLevelLoad > 1)

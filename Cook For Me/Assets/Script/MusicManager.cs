@@ -15,6 +15,7 @@ public class MusicManager : MonoBehaviour {
     void Start()
     {
         Source = gameObject.AddComponent<AudioSource>();
+        Source.volume = 0.2f;
     }
 
     // Update is called once per frame
