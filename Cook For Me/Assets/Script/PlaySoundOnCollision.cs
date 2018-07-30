@@ -87,7 +87,7 @@ public class PlaySoundOnCollision : MonoBehaviour {
         string tag = col.gameObject.tag;
         if (script != null || (tag != "" && Tag.Equals(tag)))
         {
-            if ((!source.loop || (source.loop && !source.isPlaying)) && Time.timeSinceLevelLoad > 3)
+            if ((!source.loop || (source.loop && !source.isPlaying)) && Time.timeSinceLevelLoad > 1)
             {
                 source.Play();
             }

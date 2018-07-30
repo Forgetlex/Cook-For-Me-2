@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Frigo : MonoBehaviour {
 
-    bool isOpen = false;
+    public bool isOpen = false;
     bool canBeOpen = true;
 	// Use this for initialization
 	void Start () {
